@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import HorSlider from "./HorSlider";
 
-const ShopBy = ({ filter, title }) => {
+const ShopBy = ({ filter, title, DataList}) => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,10 +31,40 @@ const ShopBy = ({ filter, title }) => {
       isMounted = false;
     };
   }, []);
+  const data = [
+    { src: "/GenInfo/adidas.jpg", name: "Adidas", to: "/search/adidas" },
+    { src: "/GenInfo/nike.png", name: "Nike", to: "/search/nike" },
+    { src: "/GenInfo/skechers.jpg", name: "Skechers", to: "/search/skechers" },
+    { src: "/GenInfo/puma.jpg", name: "Puma", to: "/search/puma" },
+  ];
 
   return (
     <>
       <div className="mt-10 mb-2 text-2xl">{title}</div>
+      {DataList &&<div className="flex flex-wrap justify-center">
+        {data.map((elem, id) => (
+          <div
+            key={id}
+            className="relative w-[340px] h-[340px] mx-2 mb-6 hover:text-white"
+          >
+            <div className="absolute w-full flex justify-center items-center top-4  ">
+              <p className="logo font-semibold z-50 ">{elem.name}</p>
+            </div>
+            <img
+              src={elem.src}
+              alt={elem.name}
+              className="w-full h-full object-cover"
+            />
+            <button
+              onClick={() => navigate(elem.to)}
+              className="absolute inset-0 flex items-center justify-center
+                             bg-gray-800 text-white opacity-0 hover:opacity-80 transition-opacity duration-200"
+            >
+              Explore →
+            </button>
+          </div>
+        ))}
+      </div>}
       <div className="overflow-x-auto overflow-y-hidden md:max-w-full scroll-container mb-10 mx-auto relative scroll-container">
         {loading && <p>Loading...</p>}
         {error && <p>Error while fetching: {error.message}</p>}
